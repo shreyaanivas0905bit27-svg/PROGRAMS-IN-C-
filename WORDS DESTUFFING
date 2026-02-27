@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define START "STX"
+#define STOP  "ETX"
+
+int main()
+{
+    FILE *fp1 = fopen("a.txt", "r");
+    FILE *fp2 = fopen("b.txt", "w");
+
+    if (fp1 == NULL || fp2 == NULL) {
+        printf("Error opening file.\n");
+        return 1;
+    }
+
+    char stuff[100];
+    fgets(stuff, sizeof(stuff), fp1);
+
+
+    if (strncmp(stuff, START, strlen(START)) == 0) {
+        int i = 0;
+        int j = strlen(START);
+        while (stuff[j] != '\0') {
+            stuff[i++] = stuff[j++];
+        }
+        stuff[i] = '\0';
+    }
+
+
+    int len = strlen(stuff);
+    if (len >= strlen(STOP) && strncmp(stuff + len - strlen(STOP), STOP, strlen(STOP)) == 0) {
+        stuff[len - strlen(STOP)] = '\0';
+    }
+
+    int i;
+    for ( i = 0; i < strlen(stuff); i++) {
+        if (strncmp(&stuff[i], "ESC", 3) == 0) {
+            i += 3;
+            fputc(stuff[i], fp2);
+        } else {
+            fputc(stuff[i], fp2);
+        }
+        usleep(50000);
+    }
+
+    printf("Destuffing successful.\n");
+
+    fclose(fp2);
+    fclose(fp1);
+    return 0;
+}
