@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int i, n, count = 0;
+    FILE *fp = fopen("bit.txt", "r");
+    char ch[100];
+
+    if (fp == NULL) {
+        printf("Error opening file.\n");
+        return 1;
+    }
+    FILE*fp1=fopen("bi.txt","w");
+    if(fp1==NULL)
+    {
+       printf("error");
+       return 1;
+    }
+
+    fgets(ch,sizeof(ch), fp);
+    fclose(fp);
+
+    n = strlen(ch);
+    printf("%d",n);
+    for (i = 6; i < n - 6; i++) {
+        if (ch[i] == '1') {
+           count++;
+            fputc(ch[i],fp1);
+
+
+            if (count == 5) {
+                if ((i + 1) < n && ch[i + 1] == '0') {
+                    i++;
+                }
+                count = 0;
+            }
+        } else {
+            fputc(ch[i],fp1);
+            count = 0;
+        }
+    }
+    printf("\ndestuffing done successfully");
+    return 0;
+}
