@@ -1,0 +1,53 @@
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+   int i,j,mat[3][3],rows,coln;
+   for(i=0;i<3;i++)
+   {
+      for(j=0;j<3;j++)
+      {
+        printf("\na[%d][%d]:",i,j);
+         scanf("%d",&mat[i][j]);
+      }
+   }
+   printf("\ndisplaying the actual matrix:\n");
+   for(i=0;i<3;i++)
+   {
+      for(j=0;j<3;j++)
+      {
+         printf("%d\t",mat[i][j]);
+      }
+      printf("\n");
+   }
+   for(i=0;i<3;i++)
+   {
+      for(j=0;j<3;j++)
+      {
+         if(mat[i][j]==0)
+         {
+            rows=i;
+            coln=j;
+            break;
+         }
+      }
+   }
+   for(i=0;i<3;i++)
+   {
+      mat[rows][i]=0;
+   }
+   for(j=0;j<3;j++)
+   {
+      mat[j][coln]=0;
+   }
+   //to display the matrix
+   printf("\ndisplaying the converted matrix:\n");
+   for(i=0;i<3;i++)
+   {
+      for(j=0;j<3;j++)
+      {
+         printf("%d\t",mat[i][j]);
+      }
+      printf("\n");
+   }
+}
