@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main()
+{
+char original[1000];
+    char start[20], stop[20];
+    FILE *fp = fopen("a.txt", "w");
+
+    if (fp == NULL) {
+        printf("Error opening file.\n");
+        return 1;
+  }
+    printf("Enter the Start and Stop markers: ");
+    scanf("%s %s", start, stop);
+    getchar();
+
+
+    printf("Enter the string or message: ");
+    fgets(original, sizeof(original), stdin);
+
+
+    size_t len = strlen(original);
+    if (original[len - 1] == '\n') {
+        original[len - 1] = '\0';
+    }
+
+
+    fputs(start, fp);
+
+ int i ;
+    for ( i = 0; i < strlen(original);) {
+        if (strncmp(&original[i], "esc", 3) == 0) {
+            fputs("ESC", fp);
+            fputs("ESC", fp);
+            i += 3;
+        } else if (strncmp(&original[i], start, strlen(start)) == 0) {
+            fputs("ESC", fp);
+            fputs(start, fp);
+            i += strlen(start);
+        } else if (strncmp(&original[i], stop, strlen(stop)) == 0) {
+            fputs("ESC", fp);
+            fputs(stop, fp);
+            i += strlen(stop);
+        } else {
+            fputc(original[i], fp);
+            i++;
+        }
+    }
+
+    fputs(stop, fp);
+
+    printf("Stuffing done successfully. Output written to a.txt\n");
+    fclose(fp);
+
+    return 0;
+}
