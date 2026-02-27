@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    FILE *fp = fopen("bit.txt", "a+");
+    int i;
+    if (fp == NULL) {
+        printf("Error opening file.\n");
+        return 1;
+    }
+
+    int count = 0;
+    char bits[100];
+
+    printf("Enter the string: ");
+    scanf("%s", bits);
+
+    fputs("011111", fp);
+
+    for (i = 0; i < strlen(bits); i++) {
+        fputc(bits[i], fp);
+
+        if (bits[i] == '1') {
+            count++;
+            if (count == 5) {
+                fputc('0', fp);
+                count = 0;
+            }
+        } else {
+            count = 0;
+        }
+    }
+
+    fputs("011111", fp);
+
+    fclose(fp);
+    return 0;
+}
